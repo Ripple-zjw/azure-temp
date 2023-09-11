@@ -3,11 +3,11 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
-        "type": "string",
-        "defaultValue": "[resourceGroup().Location]",
-        "metadata": {
-            "description": "Geo-Location to deploy SonicWall NSv"
-        }
+      "type": "string",
+      "defaultValue": "[resourceGroup().Location]",
+      "metadata": {
+        "description": "Geo-Location to deploy SonicWall NSv"
+      }
     },
     "storageAccount": {
       "type": "string",
@@ -78,19 +78,98 @@
         "description": "SSH rsa public key file as a string."
       }
     },
-    "imageSku": {
+    "imageSkuVersoin": {
       "type": "string",
-      "defaultValue": "snwl-nsv-byol",
-      "metadata": {
-        "description": "The name of the Azure product to load"
-      }
-    },
-    "imageVersion": {
-      "type": "string",
-      "defaultValue": "latest",
+      "defaultValue": "lastest",
       "metadata": {
         "description": "The version of loaded NSv image"
-      }
+      },
+      "allowedValues": [
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-654-beta-r",
+          "image": "0.6541.570"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-beta-i",
+          "image": "471.0.0"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-beta-p",
+          "image": "471.0.0"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-beta-q",
+          "image": "471.0.0"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol",
+          "image": "7.0.1511"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol",
+          "image": "7.0.1700"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol",
+          "image": "7.0.1833"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol",
+          "image": "7.0.2052"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol",
+          "image": "7.0.2267"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol-654",
+          "image": "6.5.1519"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol-v4",
+          "image": "7.0.1349"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol-v4",
+          "image": "7.0.1700"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol-v4",
+          "image": "7.0.2052"
+        },
+        {
+          "publisher": "sonicwall-inc",
+          "offer": "sonicwall-nsz-azure",
+          "sku": "snwl-nsv-byol-v4",
+          "image": "7.0.2267"
+        }
+      ]
     },
     "managementAccessIPSource": {
       "type": "string",
@@ -229,10 +308,9 @@
   },
   "variables": {
     "imagePublisher": "sonicwall-inc",
-    "imageOffer" : "sonicwall-nsz-azure",
-    "imageVersionNumberPrefix": "[if(equals(indexOf(parameters('imageVersion'), '.'), -1), '0.0.', '')]",
-    "imageVersionNumber": "[concat(variables('imageVersionNumberPrefix'), parameters('imageVersion'))]",
-    "imageVersion": "[if(equals(parameters('imageVersion'), 'latest'), 'latest', variables('imageVersionNumber'))]",
+    "imageOffer": "sonicwall-nsz-azure",
+    "imageSku": "[split(parameters('imageSkuVersoin'), ':')][0]",
+    "imageVersion": "[split(parameters('imageSkuVersoin'), ':')][1]",
     "nicName": "[concat(parameters('vmName'), '-interface')]",
     "publicIPAddressType": "Dynamic",
     "nsgname-mgmt": "[concat(parameters('vmName'), '-NSG')]",
@@ -446,9 +524,9 @@
             "name": "[concat('ipconfig', '1')]",
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
-	      "publicIPAddress": "[if(not(equals(parameters('publicIpNewOrExisting'), 'none')), variables('publicIpAddressId') , json('null'))]",
+              "publicIPAddress": "[if(not(equals(parameters('publicIpNewOrExisting'), 'none')), variables('publicIpAddressId') , json('null'))]",
               "subnet": {
-                "id": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetWANName'))]" 
+                "id": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetWANName'))]"
               }
             }
           }
@@ -474,7 +552,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetLANName'))]"  
+                "id": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetLANName'))]"
               }
             }
           }
@@ -504,7 +582,7 @@
             "value": "[parameters('vmName')]"
           },
           "imageSku": {
-            "value": "[parameters('imageSku')]"
+            "value": "[variables('imageSku')]"
           },
           "imageVersion": {
             "value": "[variables('imageVersion')]"
