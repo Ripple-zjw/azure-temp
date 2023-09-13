@@ -97,8 +97,7 @@
         "snwl-nsv-byol-654:6.5.1519",
         "snwl-nsv-byol-v4:7.0.1349",
         "snwl-nsv-byol-v4:7.0.1700",
-        "snwl-nsv-byol-v4:7.0.2052",
-        "snwl-nsv-byol-v4:7.0.2267"
+        "snwl-nsv-byol-v4:7.0.2052"
       ]
     },
     "managementAccessIPSource": {
@@ -239,8 +238,8 @@
   "variables": {
     "imagePublisher": "sonicwall-inc",
     "imageOffer": "sonicwall-nsz-azure",
-    "imageSku": "[split(parameters('imageSkuVersoin'), ':')][0]",
-    "imageVersion": "[split(parameters('imageSkuVersoin'), ':')][1]",
+    "imageSku": "[substring(parameters('imageSkuVersoin'), 0, indexOf(parameters('imageSkuVersoin'), ':'))]",
+    "imageVersion": "[substring(parameters('imageSkuVersoin'), indexOf(parameters('imageSkuVersoin'), ':') + 1)]",
     "nicName": "[concat(parameters('vmName'), '-interface')]",
     "publicIPAddressType": "Dynamic",
     "nsgname-mgmt": "[concat(parameters('vmName'), '-NSG')]",
