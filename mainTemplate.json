@@ -78,17 +78,13 @@
         "description": "SSH rsa public key file as a string."
       }
     },
-    "imageSkuVersoin": {
+    "imageSkuVersion": {
       "type": "string",
-      "defaultValue": "lastest",
+      "defaultValue": "snwl-nsv-byol:latest",
       "metadata": {
         "description": "The version of loaded NSv image"
       },
       "allowedValues": [
-        "snwl-nsv-654-beta-r:0.6541.570",
-        "snwl-nsv-beta-i:471.0.0",
-        "snwl-nsv-beta-p:471.0.0",
-        "snwl-nsv-beta-q:471.0.0",
         "snwl-nsv-byol:7.0.1511",
         "snwl-nsv-byol:7.0.1700",
         "snwl-nsv-byol:7.0.1833",
@@ -97,7 +93,9 @@
         "snwl-nsv-byol-654:6.5.1519",
         "snwl-nsv-byol-v4:7.0.1349",
         "snwl-nsv-byol-v4:7.0.1700",
-        "snwl-nsv-byol-v4:7.0.2052"
+        "snwl-nsv-byol-v4:7.0.2052",
+        "snwl-nsv-byol-v4:7.0.2267",
+        "snwl-nsv-byol:latest"
       ]
     },
     "managementAccessIPSource": {
@@ -238,8 +236,8 @@
   "variables": {
     "imagePublisher": "sonicwall-inc",
     "imageOffer": "sonicwall-nsz-azure",
-    "imageSku": "[substring(parameters('imageSkuVersoin'), 0, indexOf(parameters('imageSkuVersoin'), ':'))]",
-    "imageVersion": "[substring(parameters('imageSkuVersoin'), indexOf(parameters('imageSkuVersoin'), ':') + 1)]",
+    "imageSku": "[split(parameters('imageSkuVersion'), ':')[1]]",
+    "imageVersion": "[split(parameters('imageSkuVersion'), ':')[0]]",
     "nicName": "[concat(parameters('vmName'), '-interface')]",
     "publicIPAddressType": "Dynamic",
     "nsgname-mgmt": "[concat(parameters('vmName'), '-NSG')]",
