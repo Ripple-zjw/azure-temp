@@ -236,8 +236,8 @@
   "variables": {
     "imagePublisher": "sonicwall-inc",
     "imageOffer": "sonicwall-nsz-azure",
-    "imageSku": "[split(parameters('imageSkuVersion'), ':')[1]]",
-    "imageVersion": "[split(parameters('imageSkuVersion'), ':')[0]]",
+    "imageSku": "[split(parameters('imageSkuVersion'), ':')[0]]",
+    "imageVersion": "[split(parameters('imageSkuVersion'), ':')[1]]",
     "nicName": "[concat(parameters('vmName'), '-interface')]",
     "publicIPAddressType": "Dynamic",
     "nsgname-mgmt": "[concat(parameters('vmName'), '-NSG')]",
